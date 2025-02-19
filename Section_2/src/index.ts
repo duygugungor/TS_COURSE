@@ -63,3 +63,47 @@
 //     return numbers.reduce((total, n) => total + n, 0);
 // }
 // console.log(sum(1, 2, 3, 4, 5)); // output: 15
+//  function formatDate(this: Date){
+//     return`${this.getDate()}/${this.getMonth()}/${this.getFullYear()}`;
+//  }
+//  console.log(formatDate.call(new Date())); // output: current date 19/1/2025
+//  console.log(formatDate.apply(new Date())); // output: current date
+//  console.log(formatDate.bind(new Date())()); // output: current date
+
+//--------------------------------------------------------------
+// LOOPS
+
+// for (let i = 0; i < 5; i++) {
+//     console.log(i); // output: 0 1 2 3 4
+// }
+// let arr = [10, 20, 30, 40, 50];
+// for (let el of arr) {
+//     console.log(el); // output: 10 20 30 40 50
+// }
+// let j =0;
+// while (j < 5) {
+//     console.log(j); // output: 0 1 2 3 4
+//     j++;
+// }
+
+// let k = 0;
+// do { 
+//     console.log(k); // output: 0 1 2 3 4
+//     k++;
+// } while (k < 5);
+
+// arr.forEach((el, index) => {
+//     console.log(`Index ${index}: ${el}`); // output: Index 0: 10 Index 1: 20 Index 2: 30 Index 3: 40 Index 4: 50
+// });
+
+// type MyList = [number?, string?, boolean?];
+// let arr2: MyList = [1, 'hello', true];
+// arr2.push(2); // output: [1, 'hello', true, 2]
+// arr2.push('world'); // output: [1, 'hello', true, 2, 'world']
+// type MyObject = {a: number; b: number; c: number; [key: string]: number};
+// let obj: MyObject = {a: 1, b: 2, c: 3};
+// obj.d = 4; // output: {a: 1, b: 2, c: 3, d: 4}
+// obj['e'] = 5; // output: {a: 1, b: 2, c: 3, d: 4, e: 5
+// for (let key in obj) {
+//     console.log(`${key}: ${obj[key]}`); // output: a: 1 b: 2 c: 3 d: 4 e: 5
+// }
