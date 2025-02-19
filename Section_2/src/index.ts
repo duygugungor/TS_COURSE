@@ -111,7 +111,7 @@
 //--------------------------------------------------------------
 // GENERATOR FUNCTIONS OR GENERATORS
 
-// function* infiniteSequence() {
+// function* infiniteSequence() { // asterisk is used to define a generator function
 //     let i = 0;
 //     let j = 1;
 //     while (true) {
@@ -137,7 +137,7 @@
 //--------------------------------------------------------------
 // ITERATORS
 // let numbers = {
-//     *[Symbol.iterator]() { // generator function that returns an iterator object
+//     *[Symbol.iterator]() { // generator function that returns an iterator object. asterisk is used to define a generator function
 //         for (let n = 1; n <= 10; n++) {
 //             yield n; // yield keyword is used to pause and resume a generator function
 //         }
@@ -154,3 +154,44 @@
 // console.log(one, two, rest); // output: 1 2 [3, 4, 5, 6, 7, 8, 9, 10]
 // console.log(rest); // output: [3, 4, 5, 6, 7, 8, 9, 10]
 
+//--------------------------------------------------------------
+// CALL SIGNATURES
+// a call signature is a type signature for a function
+// x: number, y: number => number; // call signature
+// function add(x: number, y: number): number {
+//     return x + y;
+// }
+// type Add = (x: number, y?: number) => number; // call signature, type cannot be assigned to a value, contextual typing is used to infer the type
+// let add2: Add = (a, b = 1) => a + b;
+// console.log(add2(1)); // output: 2
+
+// function increment(f: (index: number) => void, n: number) { // f is a function that takes an index and returns void
+//     // a callback function is a function that is passed as an argument to another function
+//     for (let i = 0; i < n; i++) {
+//         f(i);
+//     }
+// }
+// increment(i => console.log(i), 5); // output: 0 1 2 3 4
+
+//--------------------------------------------------------------
+// SHORTHAND SIGNATURE
+// type Add = (x: number, y: number) => number;
+// FULL SIGNATURE
+// type FullAdd = {
+//     (x: number, y: number): number;
+// };
+//--------------------------------------------------------------
+// OVERLOAD Function
+type Greet = {
+    (name: string): string;
+    (name: string, age: number): string;
+}
+let greet: Greet = (name: string, ageOrUndefined?: number) => {
+    if (ageOrUndefined === undefined) {
+        return `Hello ${name}`;
+    }
+    else {
+        const age = ageOrUndefined; // ageOrUndefined is a number
+        return `Hello ${name}, you are ${age} years old`;
+    }
+}
