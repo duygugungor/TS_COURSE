@@ -115,7 +115,7 @@
 //     let i = 0;
 //     let j = 1;
 //     while (true) {
-//         yield i;
+//         yield i; // yield keyword is used to pause and resume a generator function
 //         [i, j] = [j, i + j];
 //     }
 // }
@@ -133,3 +133,24 @@
 // console.log(result.value); // output: 3 
 // result = fibGenerator.next(); // output: {value: 5, done: false}
 // console.log(result.value); // output: 5
+
+//--------------------------------------------------------------
+// ITERATORS
+// let numbers = {
+//     *[Symbol.iterator]() { // generator function that returns an iterator object
+//         for (let n = 1; n <= 10; n++) {
+//             yield n; // yield keyword is used to pause and resume a generator function
+//         }
+//     }
+// }
+// for (let a of numbers) {
+//     console.log(a); // output: 1 2 3 4 5 6 7 8 9 10
+// }
+
+// let all = [...numbers]; // output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+// let [one, two, ...rest] = numbers; // output: 1 2 [3, 4, 5, 6, 7, 8, 9, 10]
+// console.log(all); // output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+// //console.log(one, two, three, four, five, six, seven, eight, nine, ten); // it will give an error because the variables are not defined
+// console.log(one, two, rest); // output: 1 2 [3, 4, 5, 6, 7, 8, 9, 10]
+// console.log(rest); // output: [3, 4, 5, 6, 7, 8, 9, 10]
+
