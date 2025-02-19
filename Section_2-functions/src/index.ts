@@ -182,16 +182,118 @@
 // };
 //--------------------------------------------------------------
 // OVERLOAD Function
-type Greet = {
-    (name: string): string;
-    (name: string, age: number): string;
-}
-let greet: Greet = (name: string, ageOrUndefined?: number) => {
-    if (ageOrUndefined === undefined) {
-        return `Hello ${name}`;
-    }
-    else {
-        const age = ageOrUndefined; // ageOrUndefined is a number
-        return `Hello ${name}, you are ${age} years old`;
-    }
-}
+// type Greet = {
+//     (name: string): string;
+//     (name: string, age: number): string;
+// }
+// let greet: Greet = (name: string, ageOrUndefined?: number) => {
+//     if (ageOrUndefined === undefined) {
+//         return `Hello ${name}`;
+//     }
+//     else {
+//         const age = ageOrUndefined; // ageOrUndefined is a number
+//         return `Hello ${name}, you are ${age} years old`;
+//     }
+// }
+
+//--------------------------------------------------------------
+// GENERIC FUNCTIONS
+// type Swap = { // generic function, polimorphic function
+//     (a: number, b: number): [number, number]
+//     (a: string, b: string): [string, string]
+//     (a: boolean, b: boolean): [boolean, boolean]
+// }
+// let swap: Swap = (a, b) => [b, a] as any;
+// const resultNumber = swap(10, 20);
+// console.log(resultNumber); // output: [20, 10]
+// const resultString = swap('hello', 'world');
+// console.log(resultString); // output: ['world', 'hello']
+// const resultBoolean = swap(true, false);
+// console.log(resultBoolean); // output: [false, true]
+
+// type Swap = {
+//     <T>(a: T, b: T): [T, T]
+// }
+// const swap: Swap = (a, b) => [b, a];
+// const resultNumber = swap(10, 20);
+// console.log(resultNumber); // output: [20, 10]
+// const resultString = swap('hello', 'world');
+// console.log(resultString); // output: ['world', 'hello']
+// const resultBoolean = swap(true, false);
+// console.log(resultBoolean); // output: [false, true]
+
+// type Swap<T> = { 
+//     (a: T, b: T): [T, T]
+// }
+// // in this case you cannot use string or boolean unless you specify the type, 
+// // for every type you need to define a new function with the type
+// const swap: Swap<number> = (a, b) => [b, a];
+// const resultNumber = swap(10, 20); // output: [20, 10]
+
+// type Swap<T> = {
+//     (a: T, b: T): [T, T]
+// }
+// type Swap = {
+//     <T>(a: T, b: T): [T, T]
+// };
+// type Swap = <T>(a: T, b: T) => [T, T];
+// type Swap<T> = (a: T, b: T) => [T, T];
+// function Swap<T>(a: T, b: T): [T, T] {
+//     return [b, a];
+// }
+
+// function reverse<T>(list: T[]): T[] {
+//     let reversedList: T[] = [];
+//     for (let i = list.length - 1; i >= 0; i--) {
+//         reversedList.push(list[i]);
+//     }
+//     return reversedList;
+// }
+// let letters = ['a', 'b', 'c', 'd'];
+// let numbers = [1, 2, 3, 4];
+// let reversedLetters = reverse(letters);
+// let reversedNumbers = reverse(numbers);
+// console.log(reversedLetters); // output: ['d', 'c', 'b', 'a']
+// console.log(reversedNumbers); // output: [4, 3, 2, 1]
+
+// type Filter = {
+//     <T>(array: T[], f: (item: T) => boolean): T[]
+// }
+// let filter: Filter = (array, f) => {
+//     let result = [];
+//     for (let i = 0; i < array.length; i++) {
+//         if (f(array[i])) {
+//             result.push(array[i]);
+//         }
+//     }
+//     return result;
+// }
+// let names = ['David', 'John', 'Doe'];
+// let filteredNames = filter(names, name => name.startsWith('D'));
+// console.log(filteredNames); // output: ['David', 'Doe']
+
+// type Mapping = {
+//     <T, U>(array: T[], f: (item: T) => U): U[]
+// }
+// let map: Mapping = (array, f) => {
+//     let result = [];
+//     for (let i = 0; i < array.length; i++) {
+//         result.push(f(array[i]));
+//     }
+//     return result;
+// }
+// let lengths = map(names, name => name.length);
+// console.log(lengths); // output: [5, 4, 3]
+
+// type Reduce = {
+//     <T>(array: T[], f: (acc: T, current: T) => T, init: T): T
+// }
+// let reduce: Reduce = (array, f, init) => {
+//     let result = init;
+//     for (let i = 0; i < array.length; i++) {
+//         result = f(result, array[i]);
+//     }
+//     return result;
+// }
+// let sum = reduce([1, 2, 3, 4, 5], (acc, n) => acc + n, 0);
+// console.log(sum); // output: 15
