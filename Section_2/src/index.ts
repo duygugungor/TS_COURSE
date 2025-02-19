@@ -107,3 +107,29 @@
 // for (let key in obj) {
 //     console.log(`${key}: ${obj[key]}`); // output: a: 1 b: 2 c: 3 d: 4 e: 5
 // }
+
+//--------------------------------------------------------------
+// GENERATOR FUNCTIONS OR GENERATORS
+
+// function* infiniteSequence() {
+//     let i = 0;
+//     let j = 1;
+//     while (true) {
+//         yield i;
+//         [i, j] = [j, i + j];
+//     }
+// }
+
+// let fibGenerator = infiniteSequence();
+// let result = fibGenerator.next(); // output: {value: 0, done: false}
+// console.log(result.value);
+// result = fibGenerator.next(); // output: {value: 1, done: false}
+// console.log(result.value); // output: 1
+// result = fibGenerator.next(); // output: {value: 1, done: false}
+// console.log(result.value); // output: 1
+// result = fibGenerator.next(); // output: {value: 2, done: false}
+// console.log(result.value); // output: 2
+// result = fibGenerator.next(); // output: {value: 3, done: false}
+// console.log(result.value); // output: 3 
+// result = fibGenerator.next(); // output: {value: 5, done: false}
+// console.log(result.value); // output: 5
