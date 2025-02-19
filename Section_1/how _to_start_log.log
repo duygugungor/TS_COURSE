@@ -1,0 +1,6 @@
+npm init --> npm initialize, package json added
+npm i typescript --save-dev --> typescript initialize and node modules added
+npx tsc --init --> package lock json and tsconfig added
+cd Section_1
+tsc --> creates the dist folder 
+tsc ; node dist\index.js --> runs the everything in that directory
