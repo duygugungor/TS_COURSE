@@ -155,7 +155,8 @@
 // console.log(rest); // output: [3, 4, 5, 6, 7, 8, 9, 10]
 
 //--------------------------------------------------------------
-// CALL SIGNATURES
+// CALL SIGNATURES  and type annotations
+// let add: (x: number, y: number) => number;
 // a call signature is a type signature for a function
 // x: number, y: number => number; // call signature
 // function add(x: number, y: number): number {
