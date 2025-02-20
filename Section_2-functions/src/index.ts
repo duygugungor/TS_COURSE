@@ -349,16 +349,16 @@
 //--------------------------------------------------------------
 // DEFAULT GENERICS RESTRICTING GENERICS
 
-function concatArray<T = string>(items: T[]): string {
-    return items.join(', ');
-}
-const stringArray = ['a', 'b', 'c'];
-const result = concatArray(stringArray); // output: a, b, c
+// function concatArray<T = string>(items: T[]): string {
+//     return items.join(', ');
+// }
+// const stringArray = ['a', 'b', 'c'];
+// const result = concatArray(stringArray); // output: a, b, c
 
-const numberArray = [1, 2, 3];
-const result2 = concatArray(numberArray); // output: 1, 2, 3
+// const numberArray = [1, 2, 3];
+// const result2 = concatArray(numberArray); // output: 1, 2, 3
 
-const defaultArray = [1, 'a', 2, 'b', 3, 'c'];
-const defaultArray2 = ["one","two","three"];
-const result3 = concatArray(defaultArray); // output: 1, a, 2, b, 3, c
-const result4 = concatArray(defaultArray2); // output: one, two, three
+// const defaultArray = [1, 'a', 2, 'b', 3, 'c'];
+// const defaultArray2 = ["one","two","three"];
+// const result3 = concatArray(defaultArray); // output: 1, a, 2, b, 3, c
+// const result4 = concatArray(defaultArray2); // output: one, two, three
