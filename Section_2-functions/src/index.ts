@@ -297,3 +297,51 @@
 // }
 // let sum = reduce([1, 2, 3, 4, 5], (acc, n) => acc + n, 0);
 // console.log(sum); // output: 15
+
+//--------------------------------------------------------------
+// Bounded Generics and Constraints
+
+interface Comparable {
+    compareTo(other: Comparable): number;
+    // compareTo(b: this): number; // this is a self reference, it refers to the object that implements the interface 
+}
+class Person implements Comparable {
+    constructor(public name: string, public age: number) {}
+    compareTo(other: Person) : number {
+        return this.age - other.age;
+    }
+}
+
+class Numeric implements Comparable {
+    constructor(public value: number) {}
+    compareTo(other: Numeric): number {
+        return this.value - other.value;
+    }
+}
+// function findMax <T extends Comparable & AnotherConstraint >(array: T[]): T | null { 
+// --> you can add multiple constraints with & and you need to satisfy all of them
+function findMax <T extends Comparable>(array: T[]): T | null {
+    if (array.length === 0) {
+        return null;
+    }
+    let max = array[0];
+    //both for doing same though the second one is more efficient
+    for (const item of array) {
+        if (item.compareTo(max) > 0) {
+            max = item;
+        }
+    }
+    for (let i = 1; i < array.length; i++) {
+        if (array[i].compareTo(max) > 0) {
+            max = array[i];
+        }
+    }
+    return max;
+}
+const numbers: Numeric[] = [new Numeric(1), new Numeric(2), new Numeric(3)];
+const maxNumber = findMax(numbers); // output: Numeric { value: 3 }
+console.log(maxNumber?.value); // output: 3
+
+const people: Person[] = [new Person('David', 23), new Person('John', 30), new Person('Doe', 25)];
+const oldestPerson = findMax(people); // output: Person { name: 'John', age: 30 }
+console.log(oldestPerson?.name); // output: John
