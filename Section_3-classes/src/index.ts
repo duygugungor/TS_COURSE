@@ -300,3 +300,58 @@ It could be passed to any method where Person is required, regardless of having 
 // console.log(stringBox.getValue()); // Hello
 // stringBox.setValue('World');
 // console.log(stringBox.getValue()); // World
+
+//--------------------------------------------------------------
+// Statics
+
+// class Example {
+//     static staticProperty = 'static property';
+//     instanceProperty = 'instance property';
+
+//     constructor(instanceProperty: string) {
+//         this.instanceProperty = instanceProperty;
+//         // this.staticProperty = 'static property'; // Error: Property 'staticProperty' is a static member of type 'Example'
+//     }
+//     static staticMethod() {
+//         console.log('Static method');
+//     }
+//     static Add(a: number, b: number) {
+//         return a + b;
+//     }
+//     instanceMethod() {
+//         console.log('Instance method');
+//     }
+// }
+
+// // Example.staticProperty = 'static property'; // OK
+// // Example.instanceProperty = 'instance property'; // Error: Property 'instanceProperty' is a static member of type 'Example'
+// // Example.staticMethod(); // Static method
+// // Example.instanceMethod(); // Error: Property 'instanceMethod' does not exist on type 'typeof Example'
+
+// const example = new Example('new instance property');
+// // example.staticProperty = 'new static property'; // Error: Property 'staticProperty' does not exist on type 'Example'
+// example.instanceProperty = 'new instance property'; // OK
+// Example.staticMethod(); // Static method
+// example.instanceMethod(); // Instance method
+// Example.Add(1, 2); // 3
+
+// class Singleton {
+//     private static instance: Singleton | null = null;
+//     private constructor() { } // private constructor to prevent instantiation from outside the class
+//     static getInstance(): Singleton {
+//         if (!Singleton.instance) {
+//             Singleton.instance = new Singleton();
+//         }
+//         return Singleton.instance;
+//     }
+// }
+// const singleton1 = Singleton.getInstance(); // singleton1 is the only instance
+// const singleton2 = Singleton.getInstance(); // singleton1 and singleton2 are the same instance
+// console.log(singleton1 === singleton2); // true
+
+//--------------------------------------------------------------
+// Decorators
+// Decorators are a special kind of declaration that can be attached to a class declaration, method, accessor, property, or parameter.
+// Decorators use the form @expression, where expression must evaluate to a function 
+// that will be called at runtime with information about the decorated declaration.
+// Decorators are a proposed feature for JavaScript and are available as an experimental feature of TypeScript.
