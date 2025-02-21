@@ -393,6 +393,50 @@ Insantiated Example with arguments: ["Hello, world!"]
 // Property decorators are applied to the property descriptor for the property, 
 // and can be used to observe, modify, or replace a property definition.
 
+// function LogInstantiation<T extends {new (...args: any[]): {}}>(constructor: T) { 
+//     // T is a constructor function
+//     return class extends constructor { // return a new class that extends the original constructor
+//         constructor(...args: any[]) { // override the original constructor
+//             super(...args); // call the original constructor. if you do not call super, the instance will not be created
+//             console.log(`New instance of ${constructor.name}`);
+//             console.log(`Insantiated ${constructor.name} with arguments: ${JSON.stringify(args)}`);
+//         }
+//     }
+// }
+
+// function LogProperty(target: any, key: string) {
+//     console.log(`Property ${key} declared on ${target.constructor.name}`);
+// }
+
+// @LogInstantiation
+// class MyClass {
+//     @LogProperty
+//     myProperty: string;
+//     constructor(myProperty: string) {
+//         this.myProperty = myProperty;
+//     }
+// }
+
+// @LogInstantiation
+// class Example {
+//     constructor(public message: string) {
+//         console.log(`Example instantiated with message: ${message}`);
+//     }
+// }
+// const myClass = new MyClass(''); 
+// outputs with order:
+/*
+Property myProperty declared on MyClass
+New instance of MyClass
+Insantiated MyClass with arguments: [""]
+*/
+
+//--------------------------------------------------------------
+// Decorator Factories
+// Decorator factories are functions that return decorator functions.
+// Decorator factories allow you to configure decorators with parameters.
+// Decorator factories are used to create decorators that accept arguments.
+
 function LogInstantiation<T extends {new (...args: any[]): {}}>(constructor: T) { 
     // T is a constructor function
     return class extends constructor { // return a new class that extends the original constructor
@@ -406,6 +450,21 @@ function LogInstantiation<T extends {new (...args: any[]): {}}>(constructor: T) 
 
 function LogProperty(target: any, key: string) {
     console.log(`Property ${key} declared on ${target.constructor.name}`);
+}
+
+function LogMessage(message: string) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const originalMethod = descriptor.value;
+        descriptor.value = function (...args: any[]) {
+            console.log(`[${message}] Method ${propertyKey} declared on ${target.constructor.name} 
+                and called with arguments: ${JSON.stringify(args)}`);
+            return originalMethod.apply(this, args); // call the original method. if you do not call it, the method will not be executed
+            //this is the instance of the class
+            //args are the arguments passed to the method
+            //apply is used to call the original method with the instance and arguments
+        }
+        return descriptor;
+    }
 }
 
 @LogInstantiation
@@ -422,11 +481,22 @@ class Example {
     constructor(public message: string) {
         console.log(`Example instantiated with message: ${message}`);
     }
+    @LogMessage('custom log message')
+    exampleMethod(arg1: number, arg2: string) {
+        console.log(`Example method called with arguments: ${arg1}, ${arg2}`);
+    }
 }
-const myClass = new MyClass(''); 
+
+const example = new Example('Hello, world!');
+example.exampleMethod(1, 'test');
 // outputs with order:
 /*
 Property myProperty declared on MyClass
-New instance of MyClass
-Insantiated MyClass with arguments: [""]
+Example instantiated with message: Hello, world!
+New instance of Example
+Insantiated Example with arguments: ["Hello, world!"]
+[custom log message] Method exampleMethod declared on Example
+                and called with arguments: [1,"test"]
+Example method called with arguments: 1, test
+
 */
