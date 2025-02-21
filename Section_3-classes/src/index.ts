@@ -71,39 +71,177 @@
 // program chaining is a design pattern that allows you to call multiple methods of the same object in a chain.
 // This pattern is achieved by returning the object itself in the method.
 
+// class FluentCalculator {
+//     private result: number;
 
-class FluentCalculator {
-    private result: number;
+//     constructor(initialValue: number){
+//         this.result = initialValue;
+//     }
+//     // if you do not give any public or private access modifier, it is public by default
+//     add(value: number): this{
+//         this.result += value;
+//         return this;
+//     }
 
-    constructor(initialValue: number){
-        this.result = initialValue;
-    }
-    // if you do not give any public or private access modifier, it is public by default
-    add(value: number): this{
-        this.result += value;
-        return this;
-    }
+//     subtract(value: number): this{
+//         this.result -= value;
+//         return this;
+//     }
 
-    subtract(value: number): this{
-        this.result -= value;
-        return this;
-    }
+//     multiply(value: number): this{
+//         this.result *= value;
+//         return this;
+//     }
 
-    multiply(value: number): this{
-        this.result *= value;
-        return this;
-    }
+//     divide(value: number): this{
+//         this.result /= value;
+//         return this;
+//     }
 
-    divide(value: number): this{
-        this.result /= value;
-        return this;
-    }
+//     equals(): number{
+//         return this.result;
+//     }
+// }
 
-    equals(): number{
-        return this.result;
-    }
-}
+// const result = new FluentCalculator(0)
+//     .add(5).multiply(2).divide(2).subtract(1).equals();
+// console.log(result); // 4
 
-const result = new FluentCalculator(0)
-    .add(5).multiply(2).divide(2).subtract(1).equals();
-console.log(result); // 4
+//--------------------------------------------------------------
+// INTERFACE
+// An interface is a way to define a contract on a function with respect to the arguments and their type.
+// Interfaces are also used to define a contract on properties of a class.
+
+// what are the differences between type and interface in typescript?
+// In TypeScript, both type and interface can be used to define the shape of an object. However, there are some key differences between them:
+// 
+// 1. Declaration Merging
+// Interface: Interfaces can be merged. If you declare an interface with the same name multiple times, 
+// TypeScript will merge them into a single interface
+// Type: Types cannot be merged. If you declare a type with the same name multiple times, it will result in an error.
+
+// 2. Extending
+// Interface: Interfaces can extend other interfaces. 
+//              You can use the extends keyword to create a new interface that extends an existing interface.
+// Type: Types can use intersection types to achieve similar functionality to extending interfaces.
+// 
+// 3. Compatibility
+// Interface: Interfaces are open-ended. This means that you can add new properties to an interface without causing errors.
+// Type: Types are closed-ended. This means that you cannot add new properties to a type once it has been defined.
+// 
+// 4. Use Cases
+// Interface: Interfaces are typically used to define contracts on object shapes.
+// Type: Types are typically used to define aliases for primitive types, union types, tuple types, and other complex types.
+// 
+// 5. Readability
+// Interface: Interfaces are often preferred for readability, as they clearly define the shape of an object.
+// Type: Types are often preferred for brevity, as they can be more concise than interfaces in some cases.
+// 
+// 6. Implementing
+// Interface: Interfaces can be implemented by classes. 
+//            When a class implements an interface, it must adhere to the contract defined by the interface.
+//            Interfaces are primarily used for defining the shape of objects and are often used with classes.
+// Type: Types cannot be implemented by classes. 
+//       They are used to define aliases for types and cannot be enforced by the TypeScript compiler.
+//       Types are more flexible and can be used to define unions, intersections, and other complex types.
+// 
+// 7. Usage with Primitives and Unions
+// Interface: Interfaces cannot be used with primitive types or unions.
+// Type: Types can be used with primitive types, unions, and other complex types.
+
+// Also, interfaces can be used to define contracts on object types, while types can be used to define aliases for object types.
+// In general, if you are defining a contract on an object shape, you should use an interface.
+// If you are defining an alias for a type, you should use a type.
+
+// type MyType = {
+//     prop: number;
+// } extends {condition:true} ? {ekstraProp: string} : {ekstraProp: number};
+
+// interface A {
+//     good(x: number): string;
+//     bad(x: number): string;
+// }
+
+// interface B extends A {
+//     good(x: number | string): string;
+//     bad(x: number): string;
+// } // Error: Property 'good' in type 'B' is not assignable to the same property in base type 'A'.
+
+// type A = {
+//     good(x: number): string;
+//     bad(x: number): string;
+// }
+
+// type B = A & {
+//     good(x: number | string): string;
+//     bad(x: number): string;
+// }
+
+// type DogType = {
+//     name: string;
+//     breed: string;
+//     age: number;
+//     speak: (sound: string) => void;
+// }
+// interface Dog extends Animal {
+//     name: string;
+//     breed: string;
+//     age: number;
+//     speak(sound: string): void;
+// }
+// interface Animal {
+//     canFly: boolean;
+// }
+
+// typescript combines the two interfaces into one (defined identical) interface with the properties of both interfaces.
+// interface User {
+//     name: string | number | null | undefined;
+// }
+// interface User {
+//     age: number;
+//     // name: number; // Error: Property 'name' of type 'number' is not assignable to string
+
+// }
+// let user: User = { name: 'Alice', age: 30 };
+
+/* 
+    Difference between 'extends' and 'implements' in TypeScript
+
+extends means:
+The new class is a child. It gets benefits coming with inheritance. 
+It has all the properties and methods of its parent. 
+It can override some of these and implement new ones, but the parent stuff is already included.
+
+implements means:
+The new class can be treated as the same "shape", but it is not a child. 
+It could be passed to any method where Person is required, regardless of having a different parent than Person.
+
+
+// https://stackoverflow.com/questions/38834625/whats-the-difference-between-extends-and-implements-in-typescript
+*/
+
+// interface Animal { // modifiers are not allowed in interfaces such as public, private, protected
+//     readonly name: string;
+//     eat(food: string): void;
+//     sleep(hours: number): void;
+// }
+
+// interface Pet {
+//     bark(): void;
+// }
+
+// class Dog implements Animal, Pet {
+//     readonly name: string;
+//     constructor(name: string) {
+//         this.name = name;
+//      }
+//     eat(food: string): void {
+//         console.log(`Eating ${food}`);
+//     }
+//     sleep(hours: number) {
+//         console.log(`Sleeping for ${hours} hours`);
+//     }
+//     bark() {
+//         console.log('Barking');
+//     }
+// }
