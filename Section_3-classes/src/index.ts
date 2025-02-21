@@ -350,8 +350,40 @@ It could be passed to any method where Person is required, regardless of having 
 // console.log(singleton1 === singleton2); // true
 
 //--------------------------------------------------------------
-// Decorators
+// Class Decorators
 // Decorators are a special kind of declaration that can be attached to a class declaration, method, accessor, property, or parameter.
 // Decorators use the form @expression, where expression must evaluate to a function 
 // that will be called at runtime with information about the decorated declaration.
 // Decorators are a proposed feature for JavaScript and are available as an experimental feature of TypeScript.
+
+
+// as a first step, you need to enable the experimentalDecorators option in your tsconfig.json file.
+// -->     "experimentalDecorators": true, 
+
+// function LogInstantiation<T extends {new (...args: any[]): {}}>(constructor: T) { 
+//     // T is a constructor function
+//     return class extends constructor { // return a new class that extends the original constructor
+//         constructor(...args: any[]) { // override the original constructor
+//             super(...args); // call the original constructor. if you do not call super, the instance will not be created
+//             console.log(`New instance of ${constructor.name}`);
+//             console.log(`Insantiated ${constructor.name} with arguments: ${JSON.stringify(args)}`);
+//         }
+//     }
+// }
+
+// @LogInstantiation
+// class Example {
+//     constructor(public message: string) {
+//         console.log(`Example instantiated with message: ${message}`);
+//     }
+// }
+
+// const example = new Example('Hello, world!');
+// Outputs with order:
+/* 
+Example instantiated with message: Hello, world!
+New instance of Example
+Insantiated Example with arguments: ["Hello, world!"]
+*/
+
+
