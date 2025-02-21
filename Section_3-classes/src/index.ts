@@ -245,3 +245,58 @@ It could be passed to any method where Person is required, regardless of having 
 //         console.log('Barking');
 //     }
 // }
+
+//--------------------------------------------------------------
+// Generic Classes
+// Generic classes are classes that can work with any data type.
+// You can create a generic class by using the angle brackets <> to specify a type parameter.
+// The type parameter can be used as a placeholder for the actual data type that will be used with the class.
+
+// class Dog {
+//     run() {
+//         console.log('Running D');
+//     }
+// }
+
+// class Cat {
+//     run() {
+//         console.log('Running C');
+//     }
+// }
+// let dog = new Dog();
+// let cat = new Cat();
+
+// // function move(animal: Dog) {
+// //     animal.run(); // run gives error because it is protected
+// // }
+// // move(dog); // Running
+// // move(cat); // Error: Argument of type 'Cat' is not assignable to parameter of type 'Dog'.
+
+// function runAnimal<T extends Dog | Cat>(animal: T): void {
+//     animal.run();
+// }
+// runAnimal(dog); // Running D
+// runAnimal(cat); // Running C
+
+// class Box<T> {
+//     private value: T;
+//     constructor(value: T) {
+//         this.value = value;
+//     }
+//     getValue(): T {
+//         return this.value;
+//     }
+//     setValue(value: T): void {
+//         this.value = value;  
+//     }
+// }
+
+// const numberBox = new Box<number>(10);
+// console.log(numberBox.getValue()); // 10
+// numberBox.setValue(20);
+// console.log(numberBox.getValue()); // 20
+
+// const stringBox = new Box<string>('Hello');
+// console.log(stringBox.getValue()); // Hello
+// stringBox.setValue('World');
+// console.log(stringBox.getValue()); // World
