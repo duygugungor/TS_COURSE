@@ -437,6 +437,76 @@ Insantiated MyClass with arguments: [""]
 // Decorator factories allow you to configure decorators with parameters.
 // Decorator factories are used to create decorators that accept arguments.
 
+// function LogInstantiation<T extends {new (...args: any[]): {}}>(constructor: T) { 
+//     // T is a constructor function
+//     return class extends constructor { // return a new class that extends the original constructor
+//         constructor(...args: any[]) { // override the original constructor
+//             super(...args); // call the original constructor. if you do not call super, the instance will not be created
+//             console.log(`New instance of ${constructor.name}`);
+//             console.log(`Insantiated ${constructor.name} with arguments: ${JSON.stringify(args)}`);
+//         }
+//     }
+// }
+
+// function LogProperty(target: any, key: string) {
+//     console.log(`Property ${key} declared on ${target.constructor.name}`);
+// }
+
+// function LogMessage(message: string) {
+//     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+//         const originalMethod = descriptor.value;
+//         descriptor.value = function (...args: any[]) {
+//             console.log(`[${message}] Method ${propertyKey} declared on ${target.constructor.name} 
+//                 and called with arguments: ${JSON.stringify(args)}`);
+//             return originalMethod.apply(this, args); // call the original method. if you do not call it, the method will not be executed
+//             //this is the instance of the class
+//             //args are the arguments passed to the method
+//             //apply is used to call the original method with the instance and arguments
+//         }
+//         return descriptor;
+//     }
+// }
+
+// @LogInstantiation
+// class MyClass {
+//     @LogProperty
+//     myProperty: string;
+//     constructor(myProperty: string) {
+//         this.myProperty = myProperty;
+//     }
+// }
+
+// @LogInstantiation
+// class Example {
+//     constructor(public message: string) {
+//         console.log(`Example instantiated with message: ${message}`);
+//     }
+//     @LogMessage('custom log message')
+//     exampleMethod(arg1: number, arg2: string) {
+//         console.log(`Example method called with arguments: ${arg1}, ${arg2}`);
+//     }
+// }
+
+// const example = new Example('Hello, world!');
+// example.exampleMethod(1, 'test');
+// outputs with order:
+/*
+Property myProperty declared on MyClass
+Example instantiated with message: Hello, world!
+New instance of Example
+Insantiated Example with arguments: ["Hello, world!"]
+[custom log message] Method exampleMethod declared on Example
+                and called with arguments: [1,"test"]
+Example method called with arguments: 1, test
+
+*/
+
+//--------------------------------------------------------------
+// Method Decorators
+// Method decorators are used to add metadata to class methods.
+// Method decorators are declared just before a method declaration.
+// Method decorators are applied to the property descriptor for the method,
+// and can be used to observe, modify, or replace a method definition.
 function LogInstantiation<T extends {new (...args: any[]): {}}>(constructor: T) { 
     // T is a constructor function
     return class extends constructor { // return a new class that extends the original constructor
@@ -467,6 +537,32 @@ function LogMessage(message: string) {
     }
 }
 
+function LogMethod(target: any, key: string, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value;
+    descriptor.value = function (...args: any[]) {
+        console.log(`Method ${key} declared on ${target.constructor.name} 
+            and called with arguments: ${JSON.stringify(args)}`);
+        return originalMethod.apply(this, args);
+    }
+    return descriptor;
+}
+
+function timing(target: any, key: string, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value;
+    descriptor.value = function (...args: any[]) {
+        const startTime = Date.now();
+        console.time(key); // start a timer with the method name this belong to ts
+        const result = originalMethod.apply(this, args);
+        console.timeEnd(key); // end the timer with the method name this belong to ts --> output: exampleMethod2: 0.38ms
+        const endTime = Date.now();
+        const duration = endTime - startTime;
+        console.log(`Method ${key} took ${duration}ms to execute`); // output: Method exampleMethod2 took 2ms to execute
+        return result;
+    }
+    return descriptor;
+}
+
+
 @LogInstantiation
 class MyClass {
     @LogProperty
@@ -482,21 +578,19 @@ class Example {
         console.log(`Example instantiated with message: ${message}`);
     }
     @LogMessage('custom log message')
+    @LogMethod
     exampleMethod(arg1: number, arg2: string) {
         console.log(`Example method called with arguments: ${arg1}, ${arg2}`);
+    }
+    @timing
+    exampleMethod2() {
+        console.log('Example method called with arguments: NONE');
     }
 }
 
 const example = new Example('Hello, world!');
-example.exampleMethod(1, 'test');
-// outputs with order:
-/*
-Property myProperty declared on MyClass
-Example instantiated with message: Hello, world!
-New instance of Example
-Insantiated Example with arguments: ["Hello, world!"]
-[custom log message] Method exampleMethod declared on Example
-                and called with arguments: [1,"test"]
-Example method called with arguments: 1, test
-
-*/
+//example.exampleMethod(1, 'test');
+example.exampleMethod2(); 
+// Example method called with arguments: NONE
+// exampleMethod2: 0.38ms
+// Method exampleMethod2 took 2ms to execute
