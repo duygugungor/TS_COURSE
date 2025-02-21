@@ -386,4 +386,47 @@ New instance of Example
 Insantiated Example with arguments: ["Hello, world!"]
 */
 
+//--------------------------------------------------------------
+// Property Decorators
+// Property decorators are used to add metadata to class properties.
+// Property decorators are declared just before a property declaration.
+// Property decorators are applied to the property descriptor for the property, 
+// and can be used to observe, modify, or replace a property definition.
 
+function LogInstantiation<T extends {new (...args: any[]): {}}>(constructor: T) { 
+    // T is a constructor function
+    return class extends constructor { // return a new class that extends the original constructor
+        constructor(...args: any[]) { // override the original constructor
+            super(...args); // call the original constructor. if you do not call super, the instance will not be created
+            console.log(`New instance of ${constructor.name}`);
+            console.log(`Insantiated ${constructor.name} with arguments: ${JSON.stringify(args)}`);
+        }
+    }
+}
+
+function LogProperty(target: any, key: string) {
+    console.log(`Property ${key} declared on ${target.constructor.name}`);
+}
+
+@LogInstantiation
+class MyClass {
+    @LogProperty
+    myProperty: string;
+    constructor(myProperty: string) {
+        this.myProperty = myProperty;
+    }
+}
+
+@LogInstantiation
+class Example {
+    constructor(public message: string) {
+        console.log(`Example instantiated with message: ${message}`);
+    }
+}
+const myClass = new MyClass(''); 
+// outputs with order:
+/*
+Property myProperty declared on MyClass
+New instance of MyClass
+Insantiated MyClass with arguments: [""]
+*/
