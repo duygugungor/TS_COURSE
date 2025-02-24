@@ -720,48 +720,73 @@ Example method called with arguments: 1, test
 // Parameter decorators are declared just before a parameter declaration.
 // Parameter decorators are applied to the property descriptor for the parameter,
 // and can be used to observe, modify, or replace a parameter definition.
-import "reflect-metadata";
+// import "reflect-metadata";
 
-const requiredMetadataKey = Symbol("required");
+// const requiredMetadataKey = Symbol("required");
 
-function required(target: Object, propertyKey: string | symbol, parameterIndex: number) {
-    let existingRequiredParameters: number[] = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyKey) || [];
-    existingRequiredParameters.push(parameterIndex);
-    Reflect.defineMetadata(requiredMetadataKey, existingRequiredParameters, target, propertyKey);
-}
+// function required(target: Object, propertyKey: string | symbol, parameterIndex: number) {
+//     let existingRequiredParameters: number[] = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyKey) || [];
+//     existingRequiredParameters.push(parameterIndex);
+//     Reflect.defineMetadata(requiredMetadataKey, existingRequiredParameters, target, propertyKey);
+// }
 
-function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<(...args: any[])=> any>) {  
-    let method = descriptor.value!; // ! is used to tell the compiler that the value will not be null or undefined
-    descriptor.value = function(...args: any[]) {
-        let requiredParameters: number[] = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyName);
-        if (requiredParameters) {
-            for (let parameterIndex of requiredParameters) {
-                // const parameterValue = args[parameterIndex];
-                if (parameterIndex >= args.length || args[parameterIndex] === undefined) {
-                    throw new Error(`Missing required argument.${parameterIndex}, ${args[parameterIndex]}`);
-                }
-            }
-        }
-        return method.apply(this, args);
-    }
-}
+// function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<(...args: any[])=> any>) {  
+//     let method = descriptor.value!; // ! is used to tell the compiler that the value will not be null or undefined
+//     descriptor.value = function(...args: any[]) {
+//         let requiredParameters: number[] = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyName);
+//         if (requiredParameters) {
+//             for (let parameterIndex of requiredParameters) {
+//                 // const parameterValue = args[parameterIndex];
+//                 if (parameterIndex >= args.length || args[parameterIndex] === undefined) {
+//                     throw new Error(`Missing required argument.${parameterIndex}, ${args[parameterIndex]}`);
+//                 }
+//             }
+//         }
+//         return method.apply(this, args);
+//     }
+// }
 
-class Example {
-    private _message: string;
+// class Example {
+//     private _message: string;
 
-    constructor(public message: string) {
-        this._message = message;
-        console.log(`Example instantiated with message: ${message}`);
-    }
+//     constructor(public message: string) {
+//         this._message = message;
+//         console.log(`Example instantiated with message: ${message}`);
+//     }
    
-    @validate
-    exampleMethod(@required arg1: number, arg2: string) {
-        console.log(`Example method called with arguments: ${arg1}, ${arg2}`);
-    }
-}
+//     @validate
+//     exampleMethod(@required arg1: number, arg2: string) {
+//         console.log(`Example method called with arguments: ${arg1}, ${arg2}`);
+//     }
+// }
 
-const example = new Example('Hello, world!');
-example.exampleMethod(1, 'test'); // Example method called with arguments: 1, test
-// example.exampleMethod(1); // Error: Missing required argument.1, undefined
-// example.exampleMethod(1, undefined); // Error: Missing required argument.1, undefined
-// example.exampleMethod(undefined, 'test'); // Error: Missing required argument.0, undefined
+// const example = new Example('Hello, world!');
+// example.exampleMethod(1, 'test'); // Example method called with arguments: 1, test
+// // example.exampleMethod(1); // Error: Missing required argument.1, undefined
+// // example.exampleMethod(1, undefined); // Error: Missing required argument.1, undefined
+// // example.exampleMethod(undefined, 'test'); // Error: Missing required argument.0, undefined
+
+//--------------------------------------------------------------
+// Final 
+
+// class FakeFinal {
+//     message: string;
+
+//     private constructor (message: string) {
+//         this.message = message;
+//     }
+
+//     static create(message: string): FakeFinal {
+//         return new FakeFinal(message);
+//     }
+// }
+
+// // class SubFakeFinal extends FakeFinal { // Error: Constructor of class 'FakeFinal' is private and only accessible within the class declaration.
+// //     constructor(message: string) {
+// //         super(message);
+// //     }
+// // }
+
+// const fakeFinal = FakeFinal.create('Hello, world!');
+// console.log(fakeFinal.message); // Hello, world!
+
