@@ -5,4 +5,9 @@ cd Section_1
 tsc --> creates the dist folder 
 tsc ; node dist\index.js --> runs the everything in that directory
 
+
 npm i reflect-metadata
+
+
+npm i readline-sync
+npm i --save-dev @types/node
